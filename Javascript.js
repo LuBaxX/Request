@@ -4,8 +4,14 @@ const title = document.querySelector("h1");
 const noButton = document.querySelector(".no");
 const yesButton = document.querySelector(".yes");
 let noButtonArmed = false;
+let noButtonMoving = false;
 
 function moveNoButton() {
+    if (noButtonMoving) {
+        return;
+    }
+
+    noButtonMoving = true;
     const padding = 8;
     const maxLeft = Math.max(padding, window.innerWidth - noButton.offsetWidth - padding);
     const maxTop = Math.max(padding, window.innerHeight - noButton.offsetHeight - padding);
@@ -13,6 +19,10 @@ function moveNoButton() {
     noButton.style.position = "fixed";
     noButton.style.left = `${padding + Math.random() * (maxLeft - padding)}px`;
     noButton.style.top = `${padding + Math.random() * (maxTop - padding)}px`;
+
+    setTimeout(() => {
+        noButtonMoving = false;
+    }, 280);
 }
 
 document.addEventListener("pointermove", (event) => {
