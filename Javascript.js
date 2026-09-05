@@ -5,9 +5,10 @@ const noButton = document.querySelector(".no");
 const yesButton = document.querySelector(".yes");
 let noButtonArmed = false;
 let noButtonMoving = false;
+let contentOpened = false;
 
 function moveNoButton() {
-    if (noButtonMoving) {
+    if (!contentOpened || noButtonMoving) {
         return;
     }
 
@@ -15,18 +16,19 @@ function moveNoButton() {
     const padding = 8;
     const maxLeft = Math.max(padding, window.innerWidth - noButton.offsetWidth - padding);
     const maxTop = Math.max(padding, window.innerHeight - noButton.offsetHeight - padding);
+    const targetLeft = padding + Math.random() * (maxLeft - padding);
+    const targetTop = padding + Math.random() * (maxTop - padding);
 
-    noButton.style.position = "fixed";
-    noButton.style.left = `${padding + Math.random() * (maxLeft - padding)}px`;
-    noButton.style.top = `${padding + Math.random() * (maxTop - padding)}px`;
+    noButton.style.left = `${targetLeft}px`;
+    noButton.style.top = `${targetTop}px`;
 
     setTimeout(() => {
         noButtonMoving = false;
-    }, 280);
+    }, 500);
 }
 
 document.addEventListener("pointermove", (event) => {
-    if (event.pointerType === "touch") {
+    if (!contentOpened || event.pointerType === "touch") {
         return;
     }
 
@@ -54,7 +56,7 @@ document.addEventListener("pointermove", (event) => {
 });
 
 noButton.addEventListener("pointerdown", (event) => {
-    if (event.pointerType === "touch") {
+    if (contentOpened && event.pointerType === "touch") {
         event.preventDefault();
         moveNoButton();
     }
@@ -62,18 +64,26 @@ noButton.addEventListener("pointerdown", (event) => {
 
 button.addEventListener("click", () => {
     noButtonArmed = false;
-    content.style.visibility = "visible";
-
-    const noButtonBounds = noButton.getBoundingClientRect();
-    noButton.style.position = "fixed";
-    noButton.style.left = `${noButtonBounds.left}px`;
-    noButton.style.top = `${noButtonBounds.top}px`;
-    noButton.style.margin = "0";
+    contentOpened = true;
 
     button.style.visibility = "hidden";
     button.style.display = "none";
     title.style.visibility = "hidden";
     title.style.display = "none";
+
+    noButton.style.position = "static";
+    noButton.style.left = "auto";
+    noButton.style.top = "auto";
+    noButton.style.margin = "2rem 1rem";
+
+    content.style.visibility = "visible";
+    const noButtonBounds = noButton.getBoundingClientRect();
+    const buttonGap = 24;
+    noButton.style.position = "fixed";
+    noButton.style.left = `${noButtonBounds.left + buttonGap}px`;
+    noButton.style.top = `${noButtonBounds.top}px`;
+    noButton.style.margin = "0";
+    noButton.style.transition = "left 500ms ease-out, top 500ms ease-out";
 });
 
 yesButton.addEventListener("click", () => {
