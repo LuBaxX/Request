@@ -37,7 +37,8 @@ button.enter {
 
 .content {
     visibility: hidden;
-    color: #990b5e;
+    color: #ad5c8b;
+    font-weight: bold;
     background-color: #ffa1d8;
 
     font-size: clamp(1rem, 3vw, 1.5rem);
