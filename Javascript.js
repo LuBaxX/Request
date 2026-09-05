@@ -63,6 +63,13 @@ noButton.addEventListener("pointerdown", (event) => {
 button.addEventListener("click", () => {
     noButtonArmed = false;
     content.style.visibility = "visible";
+
+    const noButtonBounds = noButton.getBoundingClientRect();
+    noButton.style.position = "fixed";
+    noButton.style.left = `${noButtonBounds.left}px`;
+    noButton.style.top = `${noButtonBounds.top}px`;
+    noButton.style.margin = "0";
+
     button.style.visibility = "hidden";
     button.style.display = "none";
     title.style.visibility = "hidden";
