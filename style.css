@@ -79,4 +79,6 @@ button.yes:disabled {
 button.no {
     background-color: #c92525;
     touch-action: manipulation;
+    transition: left 280ms ease-out, top 280ms ease-out;
+    will-change: left, top;
 }
